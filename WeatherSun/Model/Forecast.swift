@@ -58,14 +58,12 @@ class Forecast {
         if let weather = weatherDict["weather"] as? [Dictionary<String,AnyObject>] {
             
             if let main = weather[0]["main"] as? String {
-                //self._weatherType = main.lowercased()
                 switch main.lowercased() {
                 case "mist","smoke","haze","fog","dust":
                     self._weatherType = "atmosphere"
                 default:
                     self._weatherType = main.lowercased()
                 }
-                //print(self._weatherType)
             }
         }
         
@@ -73,7 +71,6 @@ class Forecast {
 
             let unixConvertedDate = Date(timeIntervalSince1970: date)
             self._forecastDay = unixConvertedDate.dayOfTheWeek().capitalized
-            //print("\(self.forecastDay)")
         }
     }
 }

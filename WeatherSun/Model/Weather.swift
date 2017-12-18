@@ -50,7 +50,7 @@ class Weather {
     func downloadWeatherDetails(completed: @escaping DownloadComplete){
         Alamofire.request(CURRENT_WEATHER_URL).responseJSON { response in
             let result = response.result
-            
+
             if let dict = result.value as? Dictionary<String,AnyObject> {
                 if let name = dict["name"] as? String {
                     self._cityName = name.capitalized
@@ -76,5 +76,4 @@ class Weather {
             completed()
         }
     }
-    
 }

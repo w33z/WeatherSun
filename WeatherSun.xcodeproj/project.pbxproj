@@ -20,9 +20,8 @@
 		258A6B7C1F9D348700988516 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 258A6B7A1F9D348700988516 /* LaunchScreen.storyboard */; };
 		258A6B871F9D348700988516 /* WeatherSunTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258A6B861F9D348700988516 /* WeatherSunTests.swift */; };
 		258A6B921F9D348700988516 /* WeatherSunUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258A6B911F9D348700988516 /* WeatherSunUITests.swift */; };
-		2590F9E71FAF11E800D7AE27 /* AirQualityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2590F9E61FAF11E800D7AE27 /* AirQualityViewController.swift */; };
 		2595F3581F9E1EEC00F06C52 /* Weather.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2595F3571F9E1EEC00F06C52 /* Weather.swift */; };
-		2595F35A1F9E20C700F06C52 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2595F3591F9E20C700F06C52 /* Constants.swift */; };
+		2595F35A1F9E20C700F06C52 /* Constants and Links.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2595F3591F9E20C700F06C52 /* Constants and Links.swift */; };
 		25A902911FD32EB3005805C3 /* AirQuality.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A902901FD32EB3005805C3 /* AirQuality.swift */; };
 		25AE00DF1F9E93E800BABE4E /* ForecastCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AE00DE1F9E93E800BABE4E /* ForecastCollectionViewCell.swift */; };
 		25AE00E11F9E958A00BABE4E /* Forecast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AE00E01F9E958A00BABE4E /* Forecast.swift */; };
@@ -68,9 +67,8 @@
 		258A6B8D1F9D348700988516 /* WeatherSunUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WeatherSunUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		258A6B911F9D348700988516 /* WeatherSunUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherSunUITests.swift; sourceTree = "<group>"; };
 		258A6B931F9D348700988516 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2590F9E61FAF11E800D7AE27 /* AirQualityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirQualityViewController.swift; sourceTree = "<group>"; };
 		2595F3571F9E1EEC00F06C52 /* Weather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
-		2595F3591F9E20C700F06C52 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		2595F3591F9E20C700F06C52 /* Constants and Links.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Constants and Links.swift"; sourceTree = "<group>"; };
 		25A902901FD32EB3005805C3 /* AirQuality.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirQuality.swift; sourceTree = "<group>"; };
 		25AE00DE1F9E93E800BABE4E /* ForecastCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastCollectionViewCell.swift; sourceTree = "<group>"; };
 		25AE00E01F9E958A00BABE4E /* Forecast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Forecast.swift; sourceTree = "<group>"; };
@@ -196,7 +194,6 @@
 			children = (
 				258A6B731F9D348700988516 /* WeatherViewController.swift */,
 				2504E0291FA31B2B005460AE /* SettingController.swift */,
-				2590F9E61FAF11E800D7AE27 /* AirQualityViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -204,7 +201,7 @@
 		25CB9D481FA2155800A7D043 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				2595F3591F9E20C700F06C52 /* Constants.swift */,
+				2595F3591F9E20C700F06C52 /* Constants and Links.swift */,
 				25CB9D491FA2165A00A7D043 /* Extensions.swift */,
 			);
 			name = Helpers;
@@ -312,6 +309,11 @@
 					258A6B6D1F9D348700988516 = {
 						CreatedOnToolsVersion = 9.0.1;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Maps.iOS = {
+								enabled = 0;
+							};
+						};
 					};
 					258A6B811F9D348700988516 = {
 						CreatedOnToolsVersion = 9.0.1;
@@ -513,9 +515,14 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-WeatherSun/Pods-WeatherSun-resources.sh",
+				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
+				"${PODS_ROOT}/GooglePlacePicker/Frameworks/GooglePlacePicker.framework/Resources/GooglePlacePicker.bundle",
+				"${PODS_ROOT}/GooglePlaces/Frameworks/GooglePlaces.framework/Resources/GooglePlaces.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -529,7 +536,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2595F35A1F9E20C700F06C52 /* Constants.swift in Sources */,
+				2595F35A1F9E20C700F06C52 /* Constants and Links.swift in Sources */,
 				256F12571FAB29C1001C5DF6 /* Location.swift in Sources */,
 				256F12591FAB29E3001C5DF6 /* Temperature.swift in Sources */,
 				2595F3581F9E1EEC00F06C52 /* Weather.swift in Sources */,
@@ -540,7 +547,6 @@
 				25CB9D4A1FA2165A00A7D043 /* Extensions.swift in Sources */,
 				2504E02E1FA87A68005460AE /* Setting.swift in Sources */,
 				258A6B741F9D348700988516 /* WeatherViewController.swift in Sources */,
-				2590F9E71FAF11E800D7AE27 /* AirQualityViewController.swift in Sources */,
 				2504E02C1FA4ACC7005460AE /* SettingCell.swift in Sources */,
 				258A6B721F9D348700988516 /* AppDelegate.swift in Sources */,
 			);

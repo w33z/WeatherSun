@@ -10,8 +10,9 @@ import UIKit
 import CoreLocation
 import Alamofire
 import MapKit
+import GooglePlaces
 
-class WeatherViewController: UIViewController, CLLocationManagerDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UISearchBarDelegate,MKMapViewDelegate{
+class WeatherViewController: UIViewController,GMSAutocompleteResultsViewControllerDelegate, CLLocationManagerDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UISearchBarDelegate,MKMapViewDelegate{
 
     @IBOutlet weak var currentCity: UILabel!
     @IBOutlet weak var currentImageWeather: UIImageView!
@@ -21,8 +22,14 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate,UIColle
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var stackView: UIStackView!
     
-    var locationManager: CLLocationManager?
-    var currentLocation: CLLocation?
+    var locationManager: CLLocationManager!
+    var currentLocation: CLLocation!
+    var nextLocation: CLLocation!
+    
+    var mapKit = MKMapView()
+    var resultsViewController: GMSAutocompleteResultsViewController?
+    var searchController: UISearchController?
+    var resultView: UITextView?
     
     var currentWeather: Weather!
     
@@ -37,13 +44,13 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate,UIColle
         return launcher
     }()
     
-    var label : UILabel = {
+    var airQualityLabel : UILabel = {
         let label = UILabel()
         label.font = UIFont(name: label.font.fontName, size: 18)
         label.textColor = UIColor.white
         label.textAlignment = .center
         label.text = "Stan powietrza:"
-        label.numberOfLines = 6
+        label.numberOfLines = 10
         return label
     }()
     
@@ -53,21 +60,22 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate,UIColle
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         locationManager = CLLocationManager()
-        locationManager?.delegate = self
-        locationManager?.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager?.requestWhenInUseAuthorization()
-        locationManager?.startMonitoringSignificantLocationChanges()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startMonitoringSignificantLocationChanges()
         
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.showsHorizontalScrollIndicator = false
     
         currentWeather = Weather()
         currentAirQuality = AirQuality()
         
-        label.frame = CGRect(x: 0, y: 360, width: self.scrollView.frame.width, height: CGFloat.init(140))
-        label.center.x = self.scrollView.center.x
+        airQualityLabel.frame = CGRect(x: 0, y: 355, width: self.scrollView.frame.width, height: CGFloat.init(160))
+        airQualityLabel.center.x = self.scrollView.center.x
 
-        self.scrollView.addSubview(label)
+        self.scrollView.addSubview(airQualityLabel)
         
     }
     
@@ -86,12 +94,42 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate,UIColle
         super.viewWillDisappear(animated)
     }
 
+    @IBAction func refreshData(_ sender: Any) {
+        locationAuthStatus()
+        collectionView.reloadData()
+    }
+    
     @IBAction func settingButton(_ sender: Any) {
         settingLauncher.showSetting()
     }
     
-    var mapKit = MKMapView()
-    var resultSearchController:UISearchController? = nil
+    
+    func resultsController(_ resultsController: GMSAutocompleteResultsViewController, didAutocompleteWith place: GMSPlace) {
+        searchController?.isActive = false
+        
+        Location.sharedInstance.name = place.name
+        nextLocation = CLLocation(latitude: place.coordinate.latitude, longitude: place.coordinate.longitude)
+        Location.sharedInstance.latitude = nextLocation.coordinate.latitude
+        Location.sharedInstance.longitude = nextLocation.coordinate.longitude
+        setRegion()
+    }
+    
+    func resultsController(_ resultsController: GMSAutocompleteResultsViewController, didFailAutocompleteWithError error: Error) {
+        print("Error: ", error.localizedDescription)
+    }
+    
+    fileprivate func setRegion() {
+        mapKit.removeAnnotations(mapKit.annotations)
+        let span = MKCoordinateSpan(latitudeDelta: 0.05,longitudeDelta: 0.05)
+        let coords = CLLocationCoordinate2DMake(Location.sharedInstance.latitude, Location.sharedInstance.longitude)
+        let region = MKCoordinateRegion(center: coords, span: span)
+        self.mapKit.setRegion(region, animated: true)
+        
+        let annotation = MKPointAnnotation()
+        annotation.title = Location.sharedInstance.name
+        annotation.coordinate = coords
+        mapKit.addAnnotation(annotation)
+    }
     
     func showControllerForSetting(setting: Setting){
         let controllerForSetting = UIViewController()
@@ -103,48 +141,36 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate,UIColle
         
         if setting.imageName == "information" {
             
-            let label = UILabel(frame: CGRect(x: 0, y: 130, width: self.view.frame.width, height: 100))
-            label.font = UIFont(name: label.font.fontName, size: 20)
-            label.textColor = UIColor.white
-            label.textAlignment = .center
-            label.numberOfLines = 5
-            label.text = "Icons and images: http://flaticon.com \n Weather API: http://openweathermap.com \n AirQuality API: http://aqicn.org/api/"
+            let informationsLabel = UILabel(frame: CGRect(x: 0, y: 130, width: self.view.frame.width, height: 120))
+            informationsLabel.font = UIFont(name: informationsLabel.font.fontName, size: 20)
+            informationsLabel.textColor = UIColor.white
+            informationsLabel.textAlignment = .center
+            informationsLabel.numberOfLines = 6
+            informationsLabel.text = "Icons and images: http://flaticon.com \n Weather API:\n http://openweathermap.com \n AirQuality API: http://aqicn.org/api/"
             controllerForSetting.view.backgroundColor = UIColor.lightGray
-            controllerForSetting.view.addSubview(label)
+            controllerForSetting.view.addSubview(informationsLabel)
         } else if setting.imageName == "city" {
-            let cityTableViewController = storyboard!.instantiateViewController(withIdentifier: "CityTableViewController") as! CityTableViewController
-            resultSearchController = UISearchController(searchResultsController: cityTableViewController)
-            resultSearchController?.searchResultsUpdater = cityTableViewController
-            //cityTableViewController.view.backgroundColor = UIColor.clear
+            resultsViewController = GMSAutocompleteResultsViewController()
+            resultsViewController?.delegate = self
+
+            searchController = UISearchController(searchResultsController: resultsViewController)
+            searchController?.searchResultsUpdater = resultsViewController
             
-            let searchBar = resultSearchController!.searchBar
-            searchBar.sizeToFit()
-            controllerForSetting.navigationItem.titleView = resultSearchController?.searchBar
-            searchBar.placeholder = "Szukaj miasta..."
-            resultSearchController?.hidesNavigationBarDuringPresentation = false
+            let searchBar = searchController?.searchBar
+            searchBar?.setValue("Anuluj", forKey:"_cancelButtonText")
+            searchBar?.sizeToFit()
+            searchBar?.placeholder = "Szukaj miasta..."
+            searchController?.hidesNavigationBarDuringPresentation = false
             definesPresentationContext = false
-            cityTableViewController.mapView = mapKit
-            cityTableViewController.updateSearchResults(for: resultSearchController!)
-            controllerForSetting.view.addSubview(searchBar)
+            navigationController?.navigationBar.isTranslucent = false
 
-            /*let searchBar = UISearchBar()
-            searchBar.frame = CGRect(x: 0, y: 60, width: self.view.frame.width, height: 50)
-            searchBar.searchBarStyle = UISearchBarStyle.prominent
-            searchBar.placeholder = "Szukaj miasta..."
-            searchBar.sizeToFit()
-            searchBar.isTranslucent = false
-            searchBar.delegate = self
-
-            controllerForSetting.view.backgroundColor = UIColor.lightGray
-            controllerForSetting.view.addSubview(searchBar)*/
+            controllerForSetting.view.addSubview(searchBar!)
             
-            mapKit.frame = CGRect(x: 0, y: 60, width: self.view.frame.width, height: self.view.frame.height)
+            
+            mapKit.frame = CGRect(x: 0, y: 55, width: self.view.frame.width, height: self.view.frame.height)
             mapKit.delegate = self
             mapKit.showsUserLocation = true
-            
-            let span = MKCoordinateSpan(latitudeDelta: 0.05,longitudeDelta: 0.05)
-            let region = MKCoordinateRegion(center: (currentLocation?.coordinate)!, span: span)
-            self.mapKit.setRegion(region, animated: true)
+            setRegion()
         
             controllerForSetting.view.addSubview(mapKit)
             
@@ -152,36 +178,37 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate,UIColle
         }
     }
     
-    func updateSearchResults(for searchController: UISearchController) {
-//
-    }
-    
-
-    @IBAction func refreshData(_ sender: Any) {
-        locationAuthStatus()
-        collectionView.reloadData()
-    }
-    
     func locationAuthStatus(){
         if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
-            currentLocation = locationManager?.location
-            Location.sharedInstance.latitude = currentLocation?.coordinate.latitude
-            Location.sharedInstance.longitude = currentLocation?.coordinate.longitude
+            if currentLocation == nil {
+                currentLocation = locationManager?.location
+                Location.sharedInstance.latitude = currentLocation?.coordinate.latitude
+                Location.sharedInstance.longitude = currentLocation?.coordinate.longitude
+            } else {
+                
+                currentLocation = nextLocation
+                Location.sharedInstance.latitude = nextLocation.coordinate.latitude
+                Location.sharedInstance.longitude = nextLocation.coordinate.longitude
+                
+                CURRENT_WEATHER_URL = "http://api.openweathermap.org/data/2.5/weather?lat=\(Location.sharedInstance.latitude!)&lon=\(Location.sharedInstance.longitude!)\(lang)&appid=\(DAILY_API_KEY)"
+                FORECAST_WEATHER_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?lat=\(Location.sharedInstance.latitude!)&lon=\(Location.sharedInstance.longitude!)\(lang)&cnt=10&mode=json&appid=\(FORECAST_API_KEY)"
+                AIR_QUALITY_URL = "https://api.waqi.info/feed/geo:\(Location.sharedInstance.latitude!);\(Location.sharedInstance.longitude!)/?token=\(AIR_QUALITY_KEY)"
+            }
+
             forecasts.removeAll()
             self.airQualityText = ""
-            self.label.text = ""
             currentAirQuality.airData.removeAll()
             Temperature.actualTemperature.clear()
             self.currentAirQuality.downloadAirQualityDetails {
+                self.currentWeather.downloadWeatherDetails {
+                    self.downloadForecast {
+                        self.updateMainUI()
+                    }
+                }
                 self.airQualityText += "Stan powietrza: \(self.currentAirQuality.description)\n"
                 for i in 0..<self.currentAirQuality.airData.count {
                     for (name,value) in self.currentAirQuality.airData[i] {
                         self.airQualityText += "\n\(name): \(value)"
-                    }
-                }
-            self.currentWeather.downloadWeatherDetails {
-                self.downloadForecast {
-                        self.updateMainUI()
                     }
                 }
             }
@@ -202,8 +229,8 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate,UIColle
         }
         currentDesription.text = currentWeather.weatherDescription
         currentImageWeather.image = UIImage(named: currentWeather.weatherType)
-        label.text = airQualityText
-        self.scrollView.contentSize = CGSize(width: self.scrollView.frame.width, height: self.scrollView.frame.height + label.frame.height)
+        airQualityLabel.text = airQualityText
+        self.scrollView.contentSize = CGSize(width: self.scrollView.frame.width, height: self.scrollView.frame.height + airQualityLabel.frame.height)
     }
     
     func downloadForecast(completed: @escaping DownloadComplete) {
@@ -216,7 +243,7 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate,UIColle
                         let forecast = Forecast(weatherDict: obj)
                         self.forecasts.append(forecast)
                     }
-                    self.forecasts.remove(at: 0) //Delete actual day from forecast
+                    self.forecasts.remove(at: 0)
                     self.collectionView.reloadData()
                 }
             }
@@ -246,7 +273,4 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate,UIColle
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-
 }
-

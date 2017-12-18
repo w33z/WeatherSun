@@ -12,7 +12,7 @@ import Alamofire
 enum airQualityDescription: String{
     case good = "Zadowalający"
     case moderate = "Dopuszczalny"
-    case unhealthyForSensitive = "Niezdrowy dla wrażliwych osób"
+    case unhealthyForSensitive = "\nNiezdrowy dla wrażliwych osób"
     case unhealthy = "Niezdrowy"
     case veryUnhealty = "Bardzo niezdrowy"
     case danger = "Niebezpieczny !"
@@ -20,8 +20,27 @@ enum airQualityDescription: String{
 }
 
 class AirQuality {
-    var airData = [[String:Double]]()
+    var airData = [[String:Any]]()
     var description: String = "Stan powietrza: "
+    
+    func setDescription(_ value: Double){
+        switch (value) {
+        case 0..<50:
+            self.description = airQualityDescription.good.rawValue
+        case 50..<100:
+            self.description = airQualityDescription.moderate.rawValue
+        case 100..<150:
+            self.description = airQualityDescription.unhealthyForSensitive.rawValue
+        case 150..<200:
+            self.description = airQualityDescription.unhealthy.rawValue
+        case 200..<300:
+            self.description = airQualityDescription.veryUnhealty.rawValue
+        case 300..<1000:
+            self.description = airQualityDescription.danger.rawValue
+        default:
+            self.description = airQualityDescription.error.rawValue
+        }
+    }
     
     func downloadAirQualityDetails(completed: @escaping DownloadComplete){
         Alamofire.request(AIR_QUALITY_URL).responseJSON { response in
@@ -50,23 +69,15 @@ class AirQuality {
                                 self.airData.append(["no2":value])
                             }
                         }
-                        let value = self.airData[1]["pm25"]!
-                        switch (value) {
-                        case 0..<50:
-                            self.description = airQualityDescription.good.rawValue
-                        case 51..<100:
-                            self.description = airQualityDescription.moderate.rawValue
-                        case 101..<150:
-                            self.description = airQualityDescription.unhealthyForSensitive.rawValue
-                        case 151..<200:
-                            self.description = airQualityDescription.unhealthy.rawValue
-                        case 201..<300:
-                            self.description = airQualityDescription.veryUnhealty.rawValue
-                        case 301..<1000:
-                            self.description = airQualityDescription.danger.rawValue
-                        default:
-                            self.description = airQualityDescription.error.rawValue
+                        
+                        var value: Double!
+                        
+                        if self.airData.count == 3 {
+                            value = self.airData[0]["pm25"]! as! Double
+                        } else {
+                            value = self.airData[1]["pm25"]! as! Double
                         }
+                        self.setDescription(value)
                     }
                 }
             }
