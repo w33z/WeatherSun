@@ -12,7 +12,7 @@ import Alamofire
 enum airQualityDescription: String{
     case good = "Zadowalający"
     case moderate = "Dopuszczalny"
-    case unhealthyForSensitive = "\nNiezdrowy dla wrażliwych osób"
+    case unhealthyForSensitive = "Niezdrowy dla wrażliwych osób"
     case unhealthy = "Niezdrowy"
     case veryUnhealty = "Bardzo niezdrowy"
     case danger = "Niebezpieczny !"
@@ -53,31 +53,32 @@ class AirQuality {
                             for (_, value) in o3 {
                                 self.airData.append(["o3":value])
                             }
+                        } else {
+                           self.airData.append(["o3":0.0])
                         }
                         if let pm25 = iaqi["pm25"] as? Dictionary<String,Double> {
                             for (_, value) in pm25 {
                                 self.airData.append(["pm25":value])
                             }
+                        } else {
+                            self.airData.append(["pm25":0.0])
                         }
                         if let pm10 = iaqi["pm10"] as? Dictionary<String,Double> {
                             for (_, value) in pm10 {
                                 self.airData.append(["pm10":value])
                             }
+                        } else {
+                            self.airData.append(["pm10":0.0])
                         }
                         if let no2 = iaqi["no2"] as? Dictionary<String,Double> {
                             for (_, value) in no2 {
                                 self.airData.append(["no2":value])
                             }
-                        }
-                        
-                        var value: Double!
-                        
-                        if self.airData.count == 3 {
-                            value = self.airData[0]["pm25"]! as! Double
                         } else {
-                            value = self.airData[1]["pm25"]! as! Double
+                            self.airData.append(["no2":0.0])
                         }
-                        self.setDescription(value)
+                       let value = self.airData[1]["pm25"] as! Double
+                       self.setDescription(value)
                     }
                 }
             }

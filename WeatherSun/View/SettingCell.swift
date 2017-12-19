@@ -67,13 +67,12 @@ class SettingCell: UICollectionViewCell {
         settingImage.image = UIImage(named: setting.imageName)
         
         if setting.name == "tempSwap" {
-            
-            addSubview(control)
+
             settingLabel.isHidden = true
             self.isHighlighted = false
             control.center = CGPoint(x: self.frame.width/2, y: self.frame.height / 2)
-            
             control.addTarget(self, action: #selector(changeUnitTemperature), for: .valueChanged)
+            addSubview(control)
         }
         
         addSubview(settingImage)
@@ -101,8 +100,5 @@ class SettingCell: UICollectionViewCell {
         } else if index == 1 {
             Temperature.actualTemperature.index = index
         }
-        
-        
-    }
-    
+    }  
 }

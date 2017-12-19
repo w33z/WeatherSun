@@ -26,7 +26,7 @@ class WeatherViewController: UIViewController,GMSAutocompleteResultsViewControll
     var currentLocation: CLLocation!
     var nextLocation: CLLocation!
     
-    var mapKit = MKMapView()
+    var mapView = MKMapView()
     var resultsViewController: GMSAutocompleteResultsViewController?
     var searchController: UISearchController?
     var resultView: UITextView?
@@ -44,13 +44,13 @@ class WeatherViewController: UIViewController,GMSAutocompleteResultsViewControll
         return launcher
     }()
     
-    var airQualityLabel : UILabel = {
+    var airQualityLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: label.font.fontName, size: 18)
+        label.font = label.font.withSize(18)
         label.textColor = UIColor.white
         label.textAlignment = .center
-        label.text = "Stan powietrza:"
-        label.numberOfLines = 10
+        label.text = "Stan powietrza: -"
+        label.numberOfLines = 0
         return label
     }()
     
@@ -72,7 +72,7 @@ class WeatherViewController: UIViewController,GMSAutocompleteResultsViewControll
         currentWeather = Weather()
         currentAirQuality = AirQuality()
         
-        airQualityLabel.frame = CGRect(x: 0, y: 355, width: self.scrollView.frame.width, height: CGFloat.init(160))
+        airQualityLabel.frame = CGRect(x: 0, y: 385, width: self.scrollView.frame.width, height: 160)
         airQualityLabel.center.x = self.scrollView.center.x
 
         self.scrollView.addSubview(airQualityLabel)
@@ -105,8 +105,8 @@ class WeatherViewController: UIViewController,GMSAutocompleteResultsViewControll
     
     
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController, didAutocompleteWith place: GMSPlace) {
-        searchController?.isActive = false
         
+        searchController?.isActive = false
         Location.sharedInstance.name = place.name
         nextLocation = CLLocation(latitude: place.coordinate.latitude, longitude: place.coordinate.longitude)
         Location.sharedInstance.latitude = nextLocation.coordinate.latitude
@@ -119,18 +119,54 @@ class WeatherViewController: UIViewController,GMSAutocompleteResultsViewControll
     }
     
     fileprivate func setRegion() {
-        mapKit.removeAnnotations(mapKit.annotations)
+        mapView.removeAnnotations(mapView.annotations)
         let span = MKCoordinateSpan(latitudeDelta: 0.05,longitudeDelta: 0.05)
         let coords = CLLocationCoordinate2DMake(Location.sharedInstance.latitude, Location.sharedInstance.longitude)
         let region = MKCoordinateRegion(center: coords, span: span)
-        self.mapKit.setRegion(region, animated: true)
+        self.mapView.setRegion(region, animated: true)
         
         let annotation = MKPointAnnotation()
         annotation.title = Location.sharedInstance.name
         annotation.coordinate = coords
-        mapKit.addAnnotation(annotation)
+        mapView.addAnnotation(annotation)
     }
     
+    fileprivate func addInformationsLabel(_ controllerForSetting: UIViewController) {
+        let label = UILabel(frame: CGRect(x: 0, y: 130, width: self.view.frame.width, height: 150))
+        label.font = UIFont(name: label.font.fontName, size: 20)
+        label.textColor = UIColor.white
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        label.text = "Icons and images:\n http://flaticon.com \n\n Weather API:\n http://openweathermap.com \n\n AirQuality API: \nhttp://aqicn.org/api/"
+        controllerForSetting.view.backgroundColor = UIColor.lightGray
+        controllerForSetting.view.addSubview(label)
+    }
+    
+    fileprivate func cityChange(_ controllerForSetting: UIViewController) {
+        resultsViewController = GMSAutocompleteResultsViewController()
+        resultsViewController?.delegate = self
+        
+        searchController = UISearchController(searchResultsController: resultsViewController)
+        searchController?.searchResultsUpdater = resultsViewController
+        
+        let searchBar = searchController?.searchBar
+        searchBar?.setValue("Anuluj", forKey:"_cancelButtonText")
+        searchBar?.sizeToFit()
+        searchBar?.placeholder = "Szukaj miasta..."
+        searchController?.hidesNavigationBarDuringPresentation = false
+        definesPresentationContext = false
+        navigationController?.navigationBar.isTranslucent = false
+        
+        controllerForSetting.view.addSubview(searchBar!)
+        
+        
+        mapView.frame = CGRect(x: 0, y: 55, width: self.view.frame.width, height: self.view.frame.height)
+        mapView.delegate = self
+        setRegion()
+        
+        controllerForSetting.view.addSubview(mapView)
+    }
+
     func showControllerForSetting(setting: Setting){
         let controllerForSetting = UIViewController()
         self.navigationController?.pushViewController(controllerForSetting, animated: true)
@@ -141,49 +177,21 @@ class WeatherViewController: UIViewController,GMSAutocompleteResultsViewControll
         
         if setting.imageName == "information" {
             
-            let informationsLabel = UILabel(frame: CGRect(x: 0, y: 130, width: self.view.frame.width, height: 120))
-            informationsLabel.font = UIFont(name: informationsLabel.font.fontName, size: 20)
-            informationsLabel.textColor = UIColor.white
-            informationsLabel.textAlignment = .center
-            informationsLabel.numberOfLines = 6
-            informationsLabel.text = "Icons and images: http://flaticon.com \n Weather API:\n http://openweathermap.com \n AirQuality API: http://aqicn.org/api/"
-            controllerForSetting.view.backgroundColor = UIColor.lightGray
-            controllerForSetting.view.addSubview(informationsLabel)
+            addInformationsLabel(controllerForSetting)
         } else if setting.imageName == "city" {
-            resultsViewController = GMSAutocompleteResultsViewController()
-            resultsViewController?.delegate = self
-
-            searchController = UISearchController(searchResultsController: resultsViewController)
-            searchController?.searchResultsUpdater = resultsViewController
             
-            let searchBar = searchController?.searchBar
-            searchBar?.setValue("Anuluj", forKey:"_cancelButtonText")
-            searchBar?.sizeToFit()
-            searchBar?.placeholder = "Szukaj miasta..."
-            searchController?.hidesNavigationBarDuringPresentation = false
-            definesPresentationContext = false
-            navigationController?.navigationBar.isTranslucent = false
-
-            controllerForSetting.view.addSubview(searchBar!)
-            
-            
-            mapKit.frame = CGRect(x: 0, y: 55, width: self.view.frame.width, height: self.view.frame.height)
-            mapKit.delegate = self
-            mapKit.showsUserLocation = true
-            setRegion()
-        
-            controllerForSetting.view.addSubview(mapKit)
-            
-            
+            cityChange(controllerForSetting)
         }
     }
     
-    func locationAuthStatus(){
+    fileprivate func locationAuthStatus(){
         if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
             if currentLocation == nil {
+                
                 currentLocation = locationManager?.location
                 Location.sharedInstance.latitude = currentLocation?.coordinate.latitude
                 Location.sharedInstance.longitude = currentLocation?.coordinate.longitude
+                nextLocation = currentLocation
             } else {
                 
                 currentLocation = nextLocation
@@ -195,17 +203,15 @@ class WeatherViewController: UIViewController,GMSAutocompleteResultsViewControll
                 AIR_QUALITY_URL = "https://api.waqi.info/feed/geo:\(Location.sharedInstance.latitude!);\(Location.sharedInstance.longitude!)/?token=\(AIR_QUALITY_KEY)"
             }
 
-            forecasts.removeAll()
-            self.airQualityText = ""
-            currentAirQuality.airData.removeAll()
-            Temperature.actualTemperature.clear()
+            self.currentAirQuality.airData.removeAll()
             self.currentAirQuality.downloadAirQualityDetails {
                 self.currentWeather.downloadWeatherDetails {
                     self.downloadForecast {
                         self.updateMainUI()
                     }
                 }
-                self.airQualityText += "Stan powietrza: \(self.currentAirQuality.description)\n"
+                self.airQualityText = ""
+                self.airQualityText += "Stan powietrza: \n\(self.currentAirQuality.description)\n"
                 for i in 0..<self.currentAirQuality.airData.count {
                     for (name,value) in self.currentAirQuality.airData[i] {
                         self.airQualityText += "\n\(name): \(value)"
@@ -218,7 +224,7 @@ class WeatherViewController: UIViewController,GMSAutocompleteResultsViewControll
         }
     }
     
-    func updateMainUI(){
+    fileprivate func updateMainUI(){
         currentCity.text = currentWeather.cityName
         Temperature.actualTemperature.actualTemp = currentWeather.currentTemp
         if Temperature.actualTemperature.index == 0 {
@@ -227,13 +233,15 @@ class WeatherViewController: UIViewController,GMSAutocompleteResultsViewControll
             Temperature.actualTemperature.convertToFarenheit()
             currentTemp.text = "\(Int(Temperature.actualTemperature.actualTemp))˚"
         }
+        
         currentDesription.text = currentWeather.weatherDescription
         currentImageWeather.image = UIImage(named: currentWeather.weatherType)
         airQualityLabel.text = airQualityText
         self.scrollView.contentSize = CGSize(width: self.scrollView.frame.width, height: self.scrollView.frame.height + airQualityLabel.frame.height)
     }
     
-    func downloadForecast(completed: @escaping DownloadComplete) {
+    fileprivate func downloadForecast(completed: @escaping DownloadComplete) {
+        forecasts.removeAll()
         Alamofire.request(FORECAST_WEATHER_URL).responseJSON { response in
             let result = response.result
             

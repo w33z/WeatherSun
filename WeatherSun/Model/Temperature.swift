@@ -30,10 +30,4 @@ class Temperature {
     func convert(temp: Double) -> Double {
         return (temp * 1.8) + 32
     }
-    
-    func clear() {
-        actualForecastNight = 0
-        actualForecastDay = 0
-        actualTemp = 0
-    }
 }

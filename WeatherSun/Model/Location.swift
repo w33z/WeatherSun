@@ -14,5 +14,5 @@ class Location {
     private init() {}
     var latitude: Double!
     var longitude: Double!
-    var name: String!
+    var name: String! = "Obecna lokalizacja"
 }

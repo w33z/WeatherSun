@@ -49,12 +49,12 @@
                                 </connections>
                             </button>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" alwaysBounceVertical="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hod-pq-KAA">
-                                <rect key="frame" x="0.0" y="117" width="375" height="395"/>
+                                <rect key="frame" x="0.0" y="117" width="375" height="390"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleAspectFit" axis="vertical" distribution="fillProportionally" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="eZI-X4-KaV">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="380"/>
+                                    <stackView opaque="NO" contentMode="scaleAspectFit" axis="vertical" distribution="fillProportionally" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="eZI-X4-KaV">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="375"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kraków" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pwW-cq-RLf">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kraków" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="pwW-cq-RLf">
                                                 <rect key="frame" x="15" y="0.0" width="345" height="45"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="45" id="3l0-S3-wrd"/>
@@ -64,14 +64,14 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="clouds" translatesAutoresizingMaskIntoConstraints="NO" id="a2F-1n-dfv">
-                                                <rect key="frame" x="92.5" y="45" width="190" height="190"/>
+                                                <rect key="frame" x="102.5" y="50" width="170" height="170"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="190" id="WvM-h8-x5Z"/>
-                                                    <constraint firstAttribute="width" constant="190" id="bKe-0P-HOd"/>
+                                                    <constraint firstAttribute="height" constant="170" id="WvM-h8-x5Z"/>
+                                                    <constraint firstAttribute="width" constant="170" id="bKe-0P-HOd"/>
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="16˚" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vLM-Pq-5f5">
-                                                <rect key="frame" x="140.5" y="235" width="94" height="100"/>
+                                                <rect key="frame" x="140.5" y="225" width="94" height="100"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="100" id="V2X-ZW-mS9"/>
                                                 </constraints>
@@ -80,7 +80,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Przejściowe burze" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QY4-KG-ppU">
-                                                <rect key="frame" x="15" y="335" width="345" height="45"/>
+                                                <rect key="frame" x="15" y="330" width="345" height="45"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="45" id="uwK-wv-sOj"/>
                                                 </constraints>
@@ -94,9 +94,7 @@
                                             <constraint firstAttribute="bottom" secondItem="QY4-KG-ppU" secondAttribute="bottom" id="4TR-rf-XQe"/>
                                             <constraint firstItem="QY4-KG-ppU" firstAttribute="leading" secondItem="eZI-X4-KaV" secondAttribute="leading" constant="15" id="7Uj-4i-YmM"/>
                                             <constraint firstItem="pwW-cq-RLf" firstAttribute="leading" secondItem="eZI-X4-KaV" secondAttribute="leading" constant="15" id="TJ1-Qy-y5j"/>
-                                            <constraint firstItem="vLM-Pq-5f5" firstAttribute="top" secondItem="a2F-1n-dfv" secondAttribute="bottom" id="ZQ9-t9-Z7D"/>
                                             <constraint firstAttribute="trailing" secondItem="pwW-cq-RLf" secondAttribute="trailing" constant="15" id="aM7-Wq-gAD"/>
-                                            <constraint firstItem="QY4-KG-ppU" firstAttribute="top" secondItem="vLM-Pq-5f5" secondAttribute="bottom" id="ibh-yc-4os"/>
                                             <constraint firstAttribute="trailing" secondItem="QY4-KG-ppU" secondAttribute="trailing" constant="15" id="ot2-hD-hpk"/>
                                         </constraints>
                                     </stackView>
@@ -112,19 +110,19 @@
                                 </constraints>
                             </scrollView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Line" translatesAutoresizingMaskIntoConstraints="NO" id="gyu-Fx-rrL">
-                                <rect key="frame" x="15" y="515" width="345" height="10"/>
+                                <rect key="frame" x="15" y="510" width="345" height="10"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="10" id="468-yb-WVs"/>
                                 </constraints>
                             </imageView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="JMT-5c-wUW">
-                                <rect key="frame" x="15" y="514" width="345" height="130"/>
+                                <rect key="frame" x="15" y="500" width="345" height="130"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="130" id="sno-s9-WN0"/>
                                 </constraints>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="oiA-Df-jWk">
-                                    <size key="itemSize" width="71" height="100"/>
+                                    <size key="itemSize" width="70" height="120"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="2" minY="2" maxX="2" maxY="2"/>
@@ -188,7 +186,7 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="QUo-xY-qTB" secondAttribute="trailing" constant="15" id="B0x-mu-jMR"/>
                             <constraint firstItem="XEc-ow-Vq2" firstAttribute="trailing" secondItem="Hod-pq-KAA" secondAttribute="trailing" id="JQa-0Z-qgN"/>
                             <constraint firstItem="Hod-pq-KAA" firstAttribute="centerX" secondItem="JMT-5c-wUW" secondAttribute="centerX" id="Of4-Gz-J2u"/>
-                            <constraint firstItem="JMT-5c-wUW" firstAttribute="bottom" secondItem="XEc-ow-Vq2" secondAttribute="bottomMargin" constant="-15" id="Opj-Mv-xKt"/>
+                            <constraint firstItem="JMT-5c-wUW" firstAttribute="bottom" secondItem="XEc-ow-Vq2" secondAttribute="bottomMargin" constant="-29" id="Opj-Mv-xKt"/>
                             <constraint firstItem="l6R-xa-KFU" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="15" id="V7S-Dm-AJ5"/>
                             <constraint firstItem="XEc-ow-Vq2" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="WWC-FB-vMC"/>
                             <constraint firstItem="XEc-ow-Vq2" firstAttribute="leading" secondItem="Hod-pq-KAA" secondAttribute="leading" id="bWe-N1-fuK"/>
@@ -217,7 +215,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="305" y="115"/>
+            <point key="canvasLocation" x="311" y="115"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="5qg-Gv-FTN">

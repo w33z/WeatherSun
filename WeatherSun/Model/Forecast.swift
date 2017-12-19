@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Alamofire
 
 class Forecast {
     var _forecastDay: String!
