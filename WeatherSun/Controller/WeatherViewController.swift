@@ -72,7 +72,7 @@ class WeatherViewController: UIViewController,GMSAutocompleteResultsViewControll
         currentWeather = Weather()
         currentAirQuality = AirQuality()
         
-        airQualityLabel.frame = CGRect(x: 0, y: 385, width: self.scrollView.frame.width, height: 160)
+        airQualityLabel.frame = CGRect(x: 0, y: 385, width: self.scrollView.frame.size.width, height: 160)
         airQualityLabel.center.x = self.scrollView.center.x
 
         self.scrollView.addSubview(airQualityLabel)
@@ -96,7 +96,6 @@ class WeatherViewController: UIViewController,GMSAutocompleteResultsViewControll
 
     @IBAction func refreshData(_ sender: Any) {
         locationAuthStatus()
-        collectionView.reloadData()
     }
     
     @IBAction func settingButton(_ sender: Any) {
@@ -121,7 +120,7 @@ class WeatherViewController: UIViewController,GMSAutocompleteResultsViewControll
     fileprivate func setRegion() {
         mapView.removeAnnotations(mapView.annotations)
         let span = MKCoordinateSpan(latitudeDelta: 0.05,longitudeDelta: 0.05)
-        let coords = CLLocationCoordinate2DMake(Location.sharedInstance.latitude, Location.sharedInstance.longitude)
+        let coords = CLLocationCoordinate2DMake(Location.sharedInstance.latitude!, Location.sharedInstance.longitude!)
         let region = MKCoordinateRegion(center: coords, span: span)
         self.mapView.setRegion(region, animated: true)
         
@@ -131,8 +130,8 @@ class WeatherViewController: UIViewController,GMSAutocompleteResultsViewControll
         mapView.addAnnotation(annotation)
     }
     
-    fileprivate func addInformationsLabel(_ controllerForSetting: UIViewController) {
-        let label = UILabel(frame: CGRect(x: 0, y: 130, width: self.view.frame.width, height: 150))
+    fileprivate func prepareInformations(_ controllerForSetting: UIViewController) {
+        let label = UILabel(frame: CGRect(x: 0, y: (self.view.frame.size.height / 2) - 100, width: self.view.frame.size.width, height: 200))
         label.font = UIFont(name: label.font.fontName, size: 20)
         label.textColor = UIColor.white
         label.textAlignment = .center
@@ -142,7 +141,7 @@ class WeatherViewController: UIViewController,GMSAutocompleteResultsViewControll
         controllerForSetting.view.addSubview(label)
     }
     
-    fileprivate func cityChange(_ controllerForSetting: UIViewController) {
+    fileprivate func prepareCityChange(_ controllerForSetting: UIViewController) {
         resultsViewController = GMSAutocompleteResultsViewController()
         resultsViewController?.delegate = self
         
@@ -160,7 +159,7 @@ class WeatherViewController: UIViewController,GMSAutocompleteResultsViewControll
         controllerForSetting.view.addSubview(searchBar!)
         
         
-        mapView.frame = CGRect(x: 0, y: 55, width: self.view.frame.width, height: self.view.frame.height)
+        mapView.frame = CGRect(x: 0, y: 55, width: self.view.frame.size.width, height: self.view.frame.size.height)
         mapView.delegate = self
         setRegion()
         
@@ -177,14 +176,15 @@ class WeatherViewController: UIViewController,GMSAutocompleteResultsViewControll
         
         if setting.imageName == "information" {
             
-            addInformationsLabel(controllerForSetting)
+            prepareInformations(controllerForSetting)
         } else if setting.imageName == "city" {
             
-            cityChange(controllerForSetting)
+            prepareCityChange(controllerForSetting)
         }
+
     }
     
-    fileprivate func locationAuthStatus(){
+    func locationAuthStatus(){
         if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
             if currentLocation == nil {
                 
@@ -227,6 +227,8 @@ class WeatherViewController: UIViewController,GMSAutocompleteResultsViewControll
     fileprivate func updateMainUI(){
         currentCity.text = currentWeather.cityName
         Temperature.actualTemperature.actualTemp = currentWeather.currentTemp
+        currentTemp.text = "\(Int(Temperature.actualTemperature.actualTemp))˚"
+
         if Temperature.actualTemperature.index == 0 {
             currentTemp.text = "\(Int(Temperature.actualTemperature.actualTemp))˚"
         } else if Temperature.actualTemperature.index == 1 {
@@ -237,7 +239,7 @@ class WeatherViewController: UIViewController,GMSAutocompleteResultsViewControll
         currentDesription.text = currentWeather.weatherDescription
         currentImageWeather.image = UIImage(named: currentWeather.weatherType)
         airQualityLabel.text = airQualityText
-        self.scrollView.contentSize = CGSize(width: self.scrollView.frame.width, height: self.scrollView.frame.height + airQualityLabel.frame.height)
+        self.scrollView.contentSize = CGSize(width: self.scrollView.frame.size.width, height: self.scrollView.frame.size.height + airQualityLabel.frame.size.height)
     }
     
     fileprivate func downloadForecast(completed: @escaping DownloadComplete) {

@@ -17,9 +17,9 @@ let KELVINS = 273.15
 
 typealias DownloadComplete = () -> ()
 
-var CURRENT_WEATHER_URL = "http://api.openweathermap.org/data/2.5/weather?lat=\(Location.sharedInstance.latitude!)&lon=\(Location.sharedInstance.longitude!)\(lang)&appid=\(DAILY_API_KEY)"
-var FORECAST_WEATHER_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?lat=\(Location.sharedInstance.latitude!)&lon=\(Location.sharedInstance.longitude!)\(lang)&cnt=10&mode=json&appid=\(FORECAST_API_KEY)"
+ var CURRENT_WEATHER_URL = "http://api.openweathermap.org/data/2.5/weather?lat=\(Location.sharedInstance.latitude ?? 0)&lon=\(Location.sharedInstance.longitude ?? 0)\(lang)&appid=\(DAILY_API_KEY)"
+var FORECAST_WEATHER_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?lat=\(Location.sharedInstance.latitude ?? 0)&lon=\(Location.sharedInstance.longitude ?? 0)\(lang)&cnt=10&mode=json&appid=\(FORECAST_API_KEY)"
 
 
 let AIR_QUALITY_KEY = "d582ec06be0f0aa42392fa5cdef0d5115ebfd863"
-var AIR_QUALITY_URL = "https://api.waqi.info/feed/geo:\(Location.sharedInstance.latitude!);\(Location.sharedInstance.longitude!)/?token=\(AIR_QUALITY_KEY)"
+var AIR_QUALITY_URL = "https://api.waqi.info/feed/geo:\(Location.sharedInstance.latitude ?? 0);\(Location.sharedInstance.longitude ?? 0)/?token=\(AIR_QUALITY_KEY)"

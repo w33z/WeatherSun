@@ -39,7 +39,7 @@ class SettingController: NSObject, UICollectionViewDelegate,UICollectionViewData
             
             let height: CGFloat = CGFloat(settings.count) * cellHeight
             let y = window.frame.height - height
-            collectionView.frame = CGRect(x: 0, y: window.frame.height , width: window.frame.width, height: height)
+            collectionView.frame = CGRect(x: 0, y: window.frame.size.height , width: window.frame.size.width, height: height)
             
             blackView.frame = window.frame
             blackView.alpha = 0
@@ -47,7 +47,7 @@ class SettingController: NSObject, UICollectionViewDelegate,UICollectionViewData
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                 
                 self.blackView.alpha = 1
-                self.collectionView.frame = CGRect(x: 0, y: y, width: self.collectionView.frame.width, height: self.collectionView.frame.height)
+                self.collectionView.frame = CGRect(x: 0, y: y, width: self.collectionView.frame.size.width, height: self.collectionView.frame.size.height)
             }, completion: nil)
         }
     }
@@ -57,9 +57,9 @@ class SettingController: NSObject, UICollectionViewDelegate,UICollectionViewData
             self.blackView.alpha = 0
             
             if let window = UIApplication.shared.keyWindow {
-                self.collectionView.frame = CGRect(x: 0, y: window.frame.height, width: self.collectionView.frame.width, height: self.collectionView.frame.height)
+                self.collectionView.frame = CGRect(x: 0, y: window.frame.size.height, width: self.collectionView.frame.size.width, height: self.collectionView.frame.size.height)
             }
-            
+            self.weatherViewController?.locationAuthStatus()
         }
     }
 

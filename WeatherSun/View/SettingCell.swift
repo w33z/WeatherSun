@@ -97,8 +97,10 @@ class SettingCell: UICollectionViewCell {
         let index = Int(control.index)
         if index == 0 {
             Temperature.actualTemperature.index = index
+            
         } else if index == 1 {
             Temperature.actualTemperature.index = index
         }
+
     }  
 }
