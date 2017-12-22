@@ -16,35 +16,59 @@ class Forecast {
     var _nightTemp: Double!
     
     var forecastDay: String {
-        if _forecastDay == nil {
-            _forecastDay = ""
-        }
+        get {
+            if _forecastDay == nil {
+                _forecastDay = " "
+            }
         
-        return _forecastDay
+            return _forecastDay
+        }
+        set {
+            _forecastDay = newValue
+        }
     }
     
     var weatherType: String {
-        if _weatherType == nil {
-            _weatherType = ""
+        get {
+            if _weatherType == nil {
+            _weatherType = " "
+            }
+            
+            return _weatherType
         }
-        
-        return _weatherType
+        set {
+            _weatherType = newValue
+        }
     }
     
     var dayTemp: Double {
-        if _dayTemp == nil {
-            _dayTemp = 0.0
-        }
+        get {
+            if _dayTemp == nil {
+                _dayTemp = 0.0
+            }
         
-        return _dayTemp
+            return _dayTemp
+        }
+        set {
+            _dayTemp = newValue
+        }
     }
     
     var nightTemp: Double {
-        if _nightTemp == nil {
-            _nightTemp = 0.0
-        }
+        get {
+            if _nightTemp == nil {
+                _nightTemp = 0.0
+            }
         
-        return _nightTemp
+            return _nightTemp
+        }
+        set {
+            _nightTemp = newValue
+        }
+    }
+    
+    init(forecastDay: String){
+        self._forecastDay = forecastDay
     }
     
     init(weatherDict: Dictionary<String,AnyObject>){

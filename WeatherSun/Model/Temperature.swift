@@ -19,15 +19,13 @@ class Temperature {
     var actualForecastNight: Double!
     
     func convertToFarenheit() {
-        actualTemp = convert(temp: actualTemp)
+        actualTemp = convertFahrenheit(temp: actualTemp)
+        actualForecastDay = convertFahrenheit(temp: actualForecastDay)
+        actualForecastNight = convertFahrenheit(temp: actualForecastNight)
     }
     
-    func forecastConvertToFarenheit() {
-        actualForecastDay = convert(temp: actualForecastDay)
-        actualForecastNight = convert(temp: actualForecastNight)
-    }
-    
-    func convert(temp: Double) -> Double {
+    func convertFahrenheit(temp: Double) -> Double {
         return (temp * 1.8) + 32
     }
+   
 }

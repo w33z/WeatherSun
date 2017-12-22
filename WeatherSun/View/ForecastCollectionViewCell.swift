@@ -24,7 +24,7 @@ class ForecastCollectionViewCell: UICollectionViewCell {
         if Temperature.actualTemperature.index == 0 {
             forecastTemp.text = "\(Int(Temperature.actualTemperature.actualForecastDay))˚/\(Int(Temperature.actualTemperature.actualForecastNight))˚"
         } else if Temperature.actualTemperature.index == 1 {
-            Temperature.actualTemperature.forecastConvertToFarenheit()
+            Temperature.actualTemperature.convertToFarenheit()
             forecastTemp.text = "\(Int(Temperature.actualTemperature.actualForecastDay))˚/\(Int(Temperature.actualTemperature.actualForecastNight))˚"
         }
     }
