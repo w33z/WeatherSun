@@ -71,6 +71,7 @@ class WeatherViewController: UIViewController,GMSAutocompleteResultsViewControll
     
         currentWeather = Weather()
         currentAirQuality = AirQuality()
+
         
         airQualityLabel.frame = CGRect(x: 0, y: 385, width: self.scrollView.frame.size.width, height: 160)
         airQualityLabel.center.x = self.scrollView.center.x
@@ -158,12 +159,30 @@ class WeatherViewController: UIViewController,GMSAutocompleteResultsViewControll
         
         controllerForSetting.view.addSubview(searchBar!)
         
+        let backToCurrentLocationButton = UIButton(frame: CGRect(x: 0, y: 0, width: 32, height: 32))
+        backToCurrentLocationButton.setImage(UIImage(named: "navigation"), for: .normal)
+        backToCurrentLocationButton.addTarget(self, action: #selector(backToCurrentLocation), for: .touchUpInside)
+        
+        backToCurrentLocationButton.widthAnchor.constraint(equalToConstant: 32.0).isActive = true
+        backToCurrentLocationButton.heightAnchor.constraint(equalToConstant: 32.0).isActive = true
+        
+        let barButton = UIBarButtonItem(customView: backToCurrentLocationButton)
+        controllerForSetting.navigationItem.rightBarButtonItem = barButton
+        
         
         mapView.frame = CGRect(x: 0, y: 55, width: self.view.frame.size.width, height: self.view.frame.size.height)
         mapView.delegate = self
         setRegion()
         
         controllerForSetting.view.addSubview(mapView)
+    }
+    
+    @objc func backToCurrentLocation(){
+        setLocation(locationManager.location)
+        nextLocation = currentLocation
+        Location.sharedInstance.name = "Obecna lokalizacja"
+        setRegion()
+        locationAuthStatus()
     }
 
     func showControllerForSetting(setting: Setting){
@@ -181,22 +200,23 @@ class WeatherViewController: UIViewController,GMSAutocompleteResultsViewControll
             
             prepareCityChange(controllerForSetting)
         }
-
+    }
+    
+    fileprivate func setLocation(_ location: CLLocation?){
+        currentLocation = location
+        Location.sharedInstance.latitude = location?.coordinate.latitude
+        Location.sharedInstance.longitude = location?.coordinate.longitude
     }
     
     func locationAuthStatus(){
         if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
             if currentLocation == nil {
                 
-                currentLocation = locationManager?.location
-                Location.sharedInstance.latitude = currentLocation?.coordinate.latitude
-                Location.sharedInstance.longitude = currentLocation?.coordinate.longitude
+                setLocation(locationManager.location)
                 nextLocation = currentLocation
             } else {
                 
-                currentLocation = nextLocation
-                Location.sharedInstance.latitude = nextLocation.coordinate.latitude
-                Location.sharedInstance.longitude = nextLocation.coordinate.longitude
+                setLocation(nextLocation)
                 
                 CURRENT_WEATHER_URL = "http://api.openweathermap.org/data/2.5/weather?lat=\(Location.sharedInstance.latitude!)&lon=\(Location.sharedInstance.longitude!)\(lang)&appid=\(DAILY_API_KEY)"
                 FORECAST_WEATHER_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?lat=\(Location.sharedInstance.latitude!)&lon=\(Location.sharedInstance.longitude!)\(lang)&cnt=10&mode=json&appid=\(FORECAST_API_KEY)"
@@ -227,8 +247,6 @@ class WeatherViewController: UIViewController,GMSAutocompleteResultsViewControll
     fileprivate func updateMainUI(){
         currentCity.text = currentWeather.cityName
         Temperature.actualTemperature.actualTemp = currentWeather.currentTemp
-        currentTemp.text = "\(Int(Temperature.actualTemperature.actualTemp))˚"
-
         if Temperature.actualTemperature.index == 0 {
             currentTemp.text = "\(Int(Temperature.actualTemperature.actualTemp))˚"
         } else if Temperature.actualTemperature.index == 1 {

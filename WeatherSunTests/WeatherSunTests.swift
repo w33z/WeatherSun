@@ -15,4 +15,5 @@ class WeatherSunTests: XCTestCase {
         XCTAssertEqual(Temperature.actualTemperature.convertFahrenheit(temp: 0), 32)
         XCTAssertEqual(Temperature.actualTemperature.convertFahrenheit(temp: 34.5), 94.1)
     }
+    
 }

@@ -12,7 +12,7 @@ class Location {
     static var sharedInstance = Location()
     
     private init() {}
-    var latitude: Double?
-    var longitude: Double?
+    var latitude: Double! = 0
+    var longitude: Double! = 0
     var name: String! = "Obecna lokalizacja"
 }

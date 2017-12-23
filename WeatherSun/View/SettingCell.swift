@@ -24,13 +24,6 @@ class SettingCell: UICollectionViewCell {
         return image
     }()
     
-    let switchTemp: UISwitch = {
-        let switchT = UISwitch()
-        
-        return switchT
-    }()
-    
-    
     override var isHighlighted: Bool {
         didSet {
             backgroundColor = isHighlighted ? UIColor.lightGray : UIColor.white
@@ -70,7 +63,7 @@ class SettingCell: UICollectionViewCell {
 
             settingLabel.isHidden = true
             self.isHighlighted = false
-            control.center = CGPoint(x: self.frame.width/2, y: self.frame.height / 2)
+            control.center = CGPoint(x: self.frame.size.width/2, y: self.frame.size.height / 2)
             control.addTarget(self, action: #selector(changeUnitTemperature), for: .valueChanged)
             addSubview(control)
         }
@@ -97,10 +90,8 @@ class SettingCell: UICollectionViewCell {
         let index = Int(control.index)
         if index == 0 {
             Temperature.actualTemperature.index = index
-            
         } else if index == 1 {
             Temperature.actualTemperature.index = index
         }
-
     }  
 }

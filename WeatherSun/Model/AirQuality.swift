@@ -16,7 +16,7 @@ enum airQualityDescription: String{
     case unhealthy = "Niezdrowy"
     case veryUnhealty = "Bardzo niezdrowy"
     case danger = "Niebezpieczny !"
-    case error = "Brak danych"
+    case error = "Brak wszystkich danych"
 }
 
 class AirQuality {
@@ -25,7 +25,7 @@ class AirQuality {
     
     func setDescription(_ value: Double){
         switch (value) {
-        case 0..<50:
+        case 1..<50:
             self.description = airQualityDescription.good.rawValue
         case 50..<100:
             self.description = airQualityDescription.moderate.rawValue

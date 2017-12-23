@@ -27,5 +27,4 @@ class Temperature {
     func convertFahrenheit(temp: Double) -> Double {
         return (temp * 1.8) + 32
     }
-   
 }

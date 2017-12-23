@@ -38,7 +38,7 @@ class SettingController: NSObject, UICollectionViewDelegate,UICollectionViewData
             window.addSubview(collectionView)
             
             let height: CGFloat = CGFloat(settings.count) * cellHeight
-            let y = window.frame.height - height
+            let y = window.frame.size.height - height
             collectionView.frame = CGRect(x: 0, y: window.frame.size.height , width: window.frame.size.width, height: height)
             
             blackView.frame = window.frame

@@ -17,11 +17,10 @@ class Forecast {
     
     var forecastDay: String {
         get {
-            if _forecastDay == nil {
+             if _forecastDay == nil {
                 _forecastDay = " "
             }
-        
-            return _forecastDay
+                return _forecastDay
         }
         set {
             _forecastDay = newValue
@@ -31,9 +30,8 @@ class Forecast {
     var weatherType: String {
         get {
             if _weatherType == nil {
-            _weatherType = " "
+                _weatherType = " "
             }
-            
             return _weatherType
         }
         set {
@@ -46,7 +44,6 @@ class Forecast {
             if _dayTemp == nil {
                 _dayTemp = 0.0
             }
-        
             return _dayTemp
         }
         set {
@@ -59,16 +56,11 @@ class Forecast {
             if _nightTemp == nil {
                 _nightTemp = 0.0
             }
-        
             return _nightTemp
         }
         set {
             _nightTemp = newValue
         }
-    }
-    
-    init(forecastDay: String){
-        self._forecastDay = forecastDay
     }
     
     init(weatherDict: Dictionary<String,AnyObject>){
