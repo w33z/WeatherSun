@@ -50,30 +50,26 @@ class AirQuality {
                 if let data = dict["data"] as? Dictionary<String,AnyObject>{
                     if let iaqi = data["iaqi"] as? Dictionary<String,AnyObject> {
                         if let o3 = iaqi["o3"] as? Dictionary<String,Double> {
-                            for (_, value) in o3 {
-                                self.airData.append(["o3":value])
-                            }
+                            let o3Value = o3["v"]!
+                            self.airData.append(["o3":o3Value])
                         } else {
                            self.airData.append(["o3":0.0])
-                        }
+                        }                        
                         if let pm25 = iaqi["pm25"] as? Dictionary<String,Double> {
-                            for (_, value) in pm25 {
-                                self.airData.append(["pm25":value])
-                            }
+                            let pm25Value = pm25["v"]!
+                            self.airData.append(["pm25":pm25Value])
                         } else {
                             self.airData.append(["pm25":0.0])
                         }
                         if let pm10 = iaqi["pm10"] as? Dictionary<String,Double> {
-                            for (_, value) in pm10 {
-                                self.airData.append(["pm10":value])
-                            }
+                            let pm10Value = pm10["v"]!
+                            self.airData.append(["pm10":pm10Value])
                         } else {
                             self.airData.append(["pm10":0.0])
                         }
                         if let no2 = iaqi["no2"] as? Dictionary<String,Double> {
-                            for (_, value) in no2 {
-                                self.airData.append(["no2":value])
-                            }
+                            let no2Value = no2["v"]!
+                            self.airData.append(["no2":no2Value])
                         } else {
                             self.airData.append(["no2":0.0])
                         }

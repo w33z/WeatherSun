@@ -74,7 +74,7 @@ class WeatherViewController: UIViewController,GMSAutocompleteResultsViewControll
 
         
         airQualityLabel.frame = CGRect(x: 0, y: 385, width: self.scrollView.frame.size.width, height: 160)
-        airQualityLabel.center.x = self.scrollView.center.x
+        airQualityLabel.center.x = self.view.center.x
 
         self.scrollView.addSubview(airQualityLabel)
         
@@ -121,7 +121,7 @@ class WeatherViewController: UIViewController,GMSAutocompleteResultsViewControll
     fileprivate func setRegion() {
         mapView.removeAnnotations(mapView.annotations)
         let span = MKCoordinateSpan(latitudeDelta: 0.05,longitudeDelta: 0.05)
-        let coords = CLLocationCoordinate2DMake(Location.sharedInstance.latitude!, Location.sharedInstance.longitude!)
+        let coords = CLLocationCoordinate2DMake(Location.sharedInstance.latitude, Location.sharedInstance.longitude)
         let region = MKCoordinateRegion(center: coords, span: span)
         self.mapView.setRegion(region, animated: true)
         
@@ -145,10 +145,10 @@ class WeatherViewController: UIViewController,GMSAutocompleteResultsViewControll
     fileprivate func prepareCityChange(_ controllerForSetting: UIViewController) {
         resultsViewController = GMSAutocompleteResultsViewController()
         resultsViewController?.delegate = self
-        
+        resultsViewController?.autocompleteFilter?.type = .region
         searchController = UISearchController(searchResultsController: resultsViewController)
         searchController?.searchResultsUpdater = resultsViewController
-        
+
         let searchBar = searchController?.searchBar
         searchBar?.setValue("Anuluj", forKey:"_cancelButtonText")
         searchBar?.sizeToFit()
@@ -204,8 +204,11 @@ class WeatherViewController: UIViewController,GMSAutocompleteResultsViewControll
     
     fileprivate func setLocation(_ location: CLLocation?){
         currentLocation = location
-        Location.sharedInstance.latitude = location?.coordinate.latitude
-        Location.sharedInstance.longitude = location?.coordinate.longitude
+        
+        guard let coords = location?.coordinate else { return }
+        
+        Location.sharedInstance.updateCoords(coords.latitude, coords.longitude)
+        updateURLS(coords.latitude, coords.longitude)
     }
     
     func locationAuthStatus(){
@@ -217,10 +220,6 @@ class WeatherViewController: UIViewController,GMSAutocompleteResultsViewControll
             } else {
                 
                 setLocation(nextLocation)
-                
-                CURRENT_WEATHER_URL = "http://api.openweathermap.org/data/2.5/weather?lat=\(Location.sharedInstance.latitude!)&lon=\(Location.sharedInstance.longitude!)\(lang)&appid=\(DAILY_API_KEY)"
-                FORECAST_WEATHER_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?lat=\(Location.sharedInstance.latitude!)&lon=\(Location.sharedInstance.longitude!)\(lang)&cnt=10&mode=json&appid=\(FORECAST_API_KEY)"
-                AIR_QUALITY_URL = "https://api.waqi.info/feed/geo:\(Location.sharedInstance.latitude!);\(Location.sharedInstance.longitude!)/?token=\(AIR_QUALITY_KEY)"
             }
 
             self.currentAirQuality.airData.removeAll()
@@ -251,7 +250,7 @@ class WeatherViewController: UIViewController,GMSAutocompleteResultsViewControll
             currentTemp.text = "\(Int(Temperature.actualTemperature.actualTemp))˚"
         } else if Temperature.actualTemperature.index == 1 {
             Temperature.actualTemperature.convertToFarenheit()
-            currentTemp.text = "\(Int(Temperature.actualTemperature.actualTemp))˚"
+           currentTemp.text = "\(Int(Temperature.actualTemperature.actualTemp))˚"
         }
         
         currentDesription.text = currentWeather.weatherDescription

@@ -12,6 +12,8 @@
 		2504E02A1FA31B2B005460AE /* SettingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2504E0291FA31B2B005460AE /* SettingController.swift */; };
 		2504E02C1FA4ACC7005460AE /* SettingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2504E02B1FA4ACC7005460AE /* SettingCell.swift */; };
 		2504E02E1FA87A68005460AE /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2504E02D1FA87A68005460AE /* Setting.swift */; };
+		2526DAC31FF39411000AC50D /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2526DAC11FF39411000AC50D /* Extensions.swift */; };
+		2526DAC41FF39411000AC50D /* Constants and Links.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2526DAC21FF39411000AC50D /* Constants and Links.swift */; };
 		256F12571FAB29C1001C5DF6 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 256F12561FAB29C1001C5DF6 /* Location.swift */; };
 		256F12591FAB29E3001C5DF6 /* Temperature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 256F12581FAB29E3001C5DF6 /* Temperature.swift */; };
 		258A6B721F9D348700988516 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258A6B711F9D348700988516 /* AppDelegate.swift */; };
@@ -20,11 +22,9 @@
 		258A6B7C1F9D348700988516 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 258A6B7A1F9D348700988516 /* LaunchScreen.storyboard */; };
 		258A6B871F9D348700988516 /* WeatherSunTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258A6B861F9D348700988516 /* WeatherSunTests.swift */; };
 		2595F3581F9E1EEC00F06C52 /* Weather.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2595F3571F9E1EEC00F06C52 /* Weather.swift */; };
-		2595F35A1F9E20C700F06C52 /* Constants and Links.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2595F3591F9E20C700F06C52 /* Constants and Links.swift */; };
 		25A902911FD32EB3005805C3 /* AirQuality.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A902901FD32EB3005805C3 /* AirQuality.swift */; };
 		25AE00DF1F9E93E800BABE4E /* ForecastCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AE00DE1F9E93E800BABE4E /* ForecastCollectionViewCell.swift */; };
 		25AE00E11F9E958A00BABE4E /* Forecast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AE00E01F9E958A00BABE4E /* Forecast.swift */; };
-		25CB9D4A1FA2165A00A7D043 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CB9D491FA2165A00A7D043 /* Extensions.swift */; };
 		A183180489D4E3F2F2243125 /* Pods_WeatherSunUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D0E59ABC6FFAC4EC3F7CF4F /* Pods_WeatherSunUITests.framework */; };
 		D8D07F7F03F063C9E1B2C681 /* Pods_WeatherSun.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43D588C82C9C6526F9FA2A4C /* Pods_WeatherSun.framework */; };
 /* End PBXBuildFile section */
@@ -51,6 +51,8 @@
 		2504E0291FA31B2B005460AE /* SettingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingController.swift; sourceTree = "<group>"; };
 		2504E02B1FA4ACC7005460AE /* SettingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingCell.swift; sourceTree = "<group>"; };
 		2504E02D1FA87A68005460AE /* Setting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Setting.swift; sourceTree = "<group>"; };
+		2526DAC11FF39411000AC50D /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Extensions.swift; path = WeatherSun/Helpers/Extensions.swift; sourceTree = SOURCE_ROOT; };
+		2526DAC21FF39411000AC50D /* Constants and Links.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Constants and Links.swift"; path = "WeatherSun/Helpers/Constants and Links.swift"; sourceTree = SOURCE_ROOT; };
 		256F12561FAB29C1001C5DF6 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		256F12581FAB29E3001C5DF6 /* Temperature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Temperature.swift; sourceTree = "<group>"; };
 		258A6B6E1F9D348700988516 /* WeatherSun.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherSun.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -65,11 +67,9 @@
 		258A6B881F9D348700988516 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		258A6B8D1F9D348700988516 /* WeatherSunUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WeatherSunUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2595F3571F9E1EEC00F06C52 /* Weather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
-		2595F3591F9E20C700F06C52 /* Constants and Links.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Constants and Links.swift"; sourceTree = "<group>"; };
 		25A902901FD32EB3005805C3 /* AirQuality.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirQuality.swift; sourceTree = "<group>"; };
 		25AE00DE1F9E93E800BABE4E /* ForecastCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastCollectionViewCell.swift; sourceTree = "<group>"; };
 		25AE00E01F9E958A00BABE4E /* Forecast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Forecast.swift; sourceTree = "<group>"; };
-		25CB9D491FA2165A00A7D043 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Extensions.swift; path = WeatherSun/View/Extensions.swift; sourceTree = SOURCE_ROOT; };
 		280C2A71DD903EB9710FCC71 /* Pods-WeatherSunUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeatherSunUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WeatherSunUITests/Pods-WeatherSunUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		3673397DE51B28E6587DA1E5 /* Pods-WeatherSunTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeatherSunTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-WeatherSunTests/Pods-WeatherSunTests.release.xcconfig"; sourceTree = "<group>"; };
 		43D588C82C9C6526F9FA2A4C /* Pods_WeatherSun.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WeatherSun.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -188,8 +188,8 @@
 		25CB9D481FA2155800A7D043 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				2595F3591F9E20C700F06C52 /* Constants and Links.swift */,
-				25CB9D491FA2165A00A7D043 /* Extensions.swift */,
+				2526DAC21FF39411000AC50D /* Constants and Links.swift */,
+				2526DAC11FF39411000AC50D /* Extensions.swift */,
 			);
 			name = Helpers;
 			path = "New Group";
@@ -523,15 +523,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2595F35A1F9E20C700F06C52 /* Constants and Links.swift in Sources */,
 				256F12571FAB29C1001C5DF6 /* Location.swift in Sources */,
 				256F12591FAB29E3001C5DF6 /* Temperature.swift in Sources */,
 				2595F3581F9E1EEC00F06C52 /* Weather.swift in Sources */,
 				2504E02A1FA31B2B005460AE /* SettingController.swift in Sources */,
 				25AE00E11F9E958A00BABE4E /* Forecast.swift in Sources */,
+				2526DAC41FF39411000AC50D /* Constants and Links.swift in Sources */,
 				25A902911FD32EB3005805C3 /* AirQuality.swift in Sources */,
 				25AE00DF1F9E93E800BABE4E /* ForecastCollectionViewCell.swift in Sources */,
-				25CB9D4A1FA2165A00A7D043 /* Extensions.swift in Sources */,
+				2526DAC31FF39411000AC50D /* Extensions.swift in Sources */,
 				2504E02E1FA87A68005460AE /* Setting.swift in Sources */,
 				258A6B741F9D348700988516 /* WeatherViewController.swift in Sources */,
 				2504E02C1FA4ACC7005460AE /* SettingCell.swift in Sources */,

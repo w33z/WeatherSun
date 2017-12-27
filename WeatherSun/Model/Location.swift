@@ -12,7 +12,12 @@ class Location {
     static var sharedInstance = Location()
     
     private init() {}
-    var latitude: Double! = 0
-    var longitude: Double! = 0
-    var name: String! = "Obecna lokalizacja"
+    var latitude: Double = 0
+    var longitude: Double = 0
+    var name: String = "Obecna lokalizacja"
+    
+    func updateCoords(_ latitude: Double,_ longitude: Double) {
+        self.latitude = latitude
+        self.longitude = longitude
+    }
 }
