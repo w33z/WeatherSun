@@ -148,7 +148,7 @@ class WeatherViewController: UIViewController,GMSAutocompleteResultsViewControll
         resultsViewController?.autocompleteFilter?.type = .region
         searchController = UISearchController(searchResultsController: resultsViewController)
         searchController?.searchResultsUpdater = resultsViewController
-
+        
         let searchBar = searchController?.searchBar
         searchBar?.setValue("Anuluj", forKey:"_cancelButtonText")
         searchBar?.sizeToFit()

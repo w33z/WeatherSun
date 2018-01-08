@@ -10,10 +10,10 @@ import Foundation
 import Alamofire
 
 class Forecast {
-    var _forecastDay: String!
-    var _weatherType: String!
-    var _dayTemp: Double!
-    var _nightTemp: Double!
+    private var _forecastDay: String!
+    private var _weatherType: String!
+    private var _dayTemp: Double!
+    private var _nightTemp: Double!
     
     var forecastDay: String {
         if _forecastDay == nil {
