@@ -223,17 +223,23 @@ class WeatherViewController: UIViewController,GMSAutocompleteResultsViewControll
             }
 
             self.currentAirQuality.airData.removeAll()
-            self.currentAirQuality.downloadAirQualityDetails {
-                self.currentWeather.downloadWeatherDetails {
-                    self.downloadForecast {
-                        self.updateMainUI()
+            self.currentAirQuality.downloadAirQualityDetails { success in
+                if success {
+                    self.currentWeather.downloadWeatherDetails { success in
+                        if success {
+                            self.downloadForecast { success in
+                                if success {
+                                    self.updateMainUI()
+                                }
+                            }
+                        }
                     }
-                }
-                self.airQualityText = ""
-                self.airQualityText += "Stan powietrza: \n\(self.currentAirQuality.description)\n"
-                for i in 0..<self.currentAirQuality.airData.count {
-                    for (name,value) in self.currentAirQuality.airData[i] {
-                        self.airQualityText += "\n\(name): \(value)"
+                    self.airQualityText = ""
+                    self.airQualityText += "Stan powietrza: \n\(self.currentAirQuality.description)\n"
+                    for i in 0..<self.currentAirQuality.airData.count {
+                        for (name,value) in self.currentAirQuality.airData[i] {
+                            self.airQualityText += "\n\(name): \(value)"
+                        }
                     }
                 }
             }
@@ -257,9 +263,11 @@ class WeatherViewController: UIViewController,GMSAutocompleteResultsViewControll
         currentImageWeather.image = UIImage(named: currentWeather.weatherType)
         airQualityLabel.text = airQualityText
         self.scrollView.contentSize = CGSize(width: self.scrollView.frame.size.width, height: self.scrollView.frame.size.height + airQualityLabel.frame.size.height)
+        
+        self.collectionView.reloadData()
     }
     
-    fileprivate func downloadForecast(completed: @escaping DownloadComplete) {
+    func downloadForecast(completed: @escaping DownloadComplete) {
         forecasts.removeAll()
         Alamofire.request(FORECAST_WEATHER_URL).responseJSON { response in
             let result = response.result
@@ -271,10 +279,9 @@ class WeatherViewController: UIViewController,GMSAutocompleteResultsViewControll
                         self.forecasts.append(forecast)
                     }
                     self.forecasts.remove(at: 0)
-                    self.collectionView.reloadData()
                 }
             }
-            completed()
+            completed(true)
         }
     }
 
@@ -287,13 +294,13 @@ class WeatherViewController: UIViewController,GMSAutocompleteResultsViewControll
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ForecastCell", for: indexPath) as? ForecastCollectionViewCell {
-            let forecast = forecasts[indexPath.item]
-            cell.updateForecastCell(forecast: forecast)
-            return cell
-        } else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ForecastCell", for: indexPath) as? ForecastCollectionViewCell else {
             return ForecastCollectionViewCell()
         }
+        
+        let forecast = forecasts[indexPath.item]
+        cell.updateForecastCell(forecast: forecast)
+        return cell
     }
     
     override func didReceiveMemoryWarning() {

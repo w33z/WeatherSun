@@ -78,7 +78,7 @@ class AirQuality {
                     }
                 }
             }
-            completed()
+            completed(true)
         }
     }
 }

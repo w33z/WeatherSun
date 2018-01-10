@@ -73,7 +73,7 @@ class Weather {
                     }
                 }
             }
-            completed()
+            completed(true)
         }
     }
 }
