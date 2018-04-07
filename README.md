@@ -13,8 +13,4 @@ GoogleMaps
 
 # Screenshots
 
-![WeatherSunHome](/Screenshots/WeatherSunHome.jpg?raw=true)
-
-![WeatherSunMenu](/Screenshots/WeatherSunMenu.jpg?raw=true)
-
-![WeatherSunMap](/Screenshots/WeatherSunMap.jpg?raw=true)
+![WeatherSunHome](/Screenshots/WeatherSunHome.jpg?raw=true) ![WeatherSunMenu](/Screenshots/WeatherSunMenu.jpg?raw=true) ![WeatherSunMap](/Screenshots/WeatherSunMap.jpg?raw=true)
