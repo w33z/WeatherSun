@@ -55,6 +55,10 @@ class WeatherViewController: UIViewController,GMSAutocompleteResultsViewControll
     }()
     
     var airQualityText = ""
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
         
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,9 +81,8 @@ class WeatherViewController: UIViewController,GMSAutocompleteResultsViewControll
         airQualityLabel.center.x = self.view.center.x
 
         self.scrollView.addSubview(airQualityLabel)
-        
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         locationAuthStatus()
@@ -270,18 +273,23 @@ class WeatherViewController: UIViewController,GMSAutocompleteResultsViewControll
     func downloadForecast(completed: @escaping DownloadComplete) {
         forecasts.removeAll()
         Alamofire.request(FORECAST_WEATHER_URL).responseJSON { response in
-            let result = response.result
             
-            if let dict = result.value as? Dictionary<String,AnyObject> {
-                if let list = dict["list"] as? [Dictionary<String,AnyObject>] {
-                    for obj in list {
-                        let forecast = Forecast(weatherDict: obj)
-                        self.forecasts.append(forecast)
+            let result = response.result
+            if result.error == nil {
+                if let dict = result.value as? Dictionary<String,AnyObject> {
+                    if let list = dict["list"] as? [Dictionary<String,AnyObject>] {
+                        for obj in list {
+                            let forecast = Forecast(weatherDict: obj)
+                            self.forecasts.append(forecast)
+                        }
+                        self.forecasts.remove(at: 0)
                     }
-                    self.forecasts.remove(at: 0)
                 }
+                completed(true)
+            } else {
+                completed(false)
+                debugPrint(result.error as Any)
             }
-            completed(true)
         }
     }
 

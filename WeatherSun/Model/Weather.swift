@@ -51,29 +51,34 @@ class Weather {
         Alamofire.request(CURRENT_WEATHER_URL).responseJSON { response in
             let result = response.result
 
-            if let dict = result.value as? Dictionary<String,AnyObject> {
-                if let name = dict["name"] as? String {
-                    self._cityName = name.capitalized
-                }
-                if let weather = dict["weather"] as? [Dictionary<String,AnyObject>]{
-                    if let main = weather[0]["main"], let description = weather[0]["description"] as? String {
-                        //self._weatherType = main.lowercased
-                        switch main.lowercased {
-                        case "mist","smoke","haze","fog","dust":
-                            self._weatherType = "atmosphere"
-                        default:
-                            self._weatherType = main.lowercased
+            if result.error == nil {
+                if let dict = result.value as? Dictionary<String,AnyObject> {
+                    if let name = dict["name"] as? String {
+                        self._cityName = name.capitalized
+                    }
+                    if let weather = dict["weather"] as? [Dictionary<String,AnyObject>]{
+                        if let main = weather[0]["main"], let description = weather[0]["description"] as? String {
+                            //self._weatherType = main.lowercased
+                            switch main.lowercased {
+                            case "mist","smoke","haze","fog","dust":
+                                self._weatherType = "atmosphere"
+                            default:
+                                self._weatherType = main.lowercased
+                            }
+                            self._weatherDescription = description.capitalized
                         }
-                        self._weatherDescription = description.capitalized
+                    }
+                    if let main = dict["main"] as? Dictionary<String,AnyObject>{
+                        if let temp = main["temp"] as? Double {
+                            self._currentTemp = temp - KELVINS
+                        }
                     }
                 }
-                if let main = dict["main"] as? Dictionary<String,AnyObject>{
-                    if let temp = main["temp"] as? Double {
-                        self._currentTemp = temp - KELVINS
-                    }
-                }
+                completed(true)
+            } else {
+                completed(false)
+                debugPrint(result.error as Any)
             }
-            completed(true)
         }
     }
 }

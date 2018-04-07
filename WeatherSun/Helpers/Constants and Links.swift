@@ -15,7 +15,7 @@ let LONGITUDE = "&lon="
 let lang = "&lang=pl"
 let KELVINS = 273.15
 
- typealias DownloadComplete = (_ complete: Bool) -> ()
+typealias DownloadComplete = (_ complete: Bool) -> ()
 
 var CURRENT_WEATHER_URL = "http://api.openweathermap.org/data/2.5/weather?lat=\(Location.sharedInstance.latitude)&lon=\(Location.sharedInstance.longitude)\(lang)&appid=\(DAILY_API_KEY)"
 var FORECAST_WEATHER_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?lat=\(Location.sharedInstance.latitude)&lon=\(Location.sharedInstance.longitude)\(lang)&cnt=10&mode=json&appid=\(FORECAST_API_KEY)"
